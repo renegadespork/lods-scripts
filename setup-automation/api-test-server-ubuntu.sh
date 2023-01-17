@@ -1,4 +1,4 @@
-apt install docker &&
-apt install docker-compose &&
+apt-get install docker &&
+apt-get install docker-compose &&
 useradd -rUm docker &&
 mkdir /home/docker/compose
