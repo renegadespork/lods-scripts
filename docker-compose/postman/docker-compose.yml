@@ -1,0 +1,10 @@
+version: '1.0'
+services:
+  postman:
+    image: kasmweb/postman:1.12.0
+    container_name: postman
+    environment:
+    - VNC_PW=8mjmwbyBGRrEo5Ak
+    ports:
+    - 6080:6901
+    restart: unless-stopped
