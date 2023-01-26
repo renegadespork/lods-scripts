@@ -1,0 +1,66 @@
+# Container Logs
+version: '1.2'
+services:
+  dozzle:
+    image: amir20/dozzle
+    container_name: dozzle
+    ports:
+      - 4080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+
+# Moodle
+  moodle-db:
+    container_name: moodle-db
+    image: bitnami/mariadb:10.6
+    environment:
+    - MARIADB_USER=moodle
+    - MARIADB_PASSWORD=DZ36FWwwt6uZXQLF
+    - MARIADB_ROOT_PASSWORD=s6x8MGNitLAkDtPzNH
+    - MARIADB_DATABASE=moodle
+    - MARIADB_CHATACTER_SET=utf8mb4
+    - MARIADB_COLLATE=utf8mb4_unicode_ci
+    volumes:
+    - db_data:/bitnami/mariadb
+    restart: unless-stopped
+
+  moodle:
+    container_name: moodle
+    image: bitnami/moodle
+    ports:
+      - 5080:8080
+      - 5443:8443
+    environment:
+      - MOODLE_DATABASE_HOST=moodle-db
+      - MOODLE_DATABASE_POST_NUMBER=3306
+      - MOODLE_DATABASE_USER=moodle
+      - MOODLE_DATABASE_PASSWORD=DZ36FWwwt6uZXQLF
+      - MOODLE_DATABASE_NAME=moodle
+      - MOODLE_USERNAME=admin
+      - MOODLE_PASSWORD=PBV38rjwk7oEUoZL
+      - MOODLE_SITE_NAME='Skillable Integration Testing'
+    volumes:
+    - moodle_data:/bitnami/moodle
+    - moodledata_data:/bitnami/moodledata
+    depends_on:
+      - moodle-db
+    restart: unless-stopped
+    
+# Postman
+  postman:
+    image: kasmweb/postman:1.12.0
+    container_name: postman
+    environment:
+    - VNC_PW=8mjmwbyBGRrEo5Ak
+    ports:
+    - 6080:6901
+    restart: unless-stopped
+
+volumes:
+  db_data:
+    driver: local
+  moodle_data:
+    driver: local
+  moodledata_data:
+    driver: local
